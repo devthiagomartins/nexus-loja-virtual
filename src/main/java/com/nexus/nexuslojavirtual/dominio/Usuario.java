@@ -19,9 +19,18 @@ public class Usuario implements UserDetails {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_usuario")
     private Long id;
 
+    @Column(nullable = false)
     private String login;
+
+    @Column(nullable = false)
     private String senha;
+
+    @Column(nullable = false)
     private Date dataAtualSenha;
+
+    @ManyToOne(targetEntity = Pessoa.class)
+    @JoinColumn(name = "pessoa_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "pessoa_fk"))
+    private Pessoa pessoa;
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "usuario_acesso",
@@ -63,5 +72,21 @@ public class Usuario implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public Date getDataAtualSenha() {
+        return dataAtualSenha;
+    }
+
+    public void setDataAtualSenha(Date dataAtualSenha) {
+        this.dataAtualSenha = dataAtualSenha;
+    }
+
+    public Pessoa getPessoa() {
+        return pessoa;
+    }
+
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
     }
 }
